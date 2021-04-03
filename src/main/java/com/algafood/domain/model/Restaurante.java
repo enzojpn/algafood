@@ -56,6 +56,16 @@ public class Restaurante {
 		return result;
 	}
 
+	
+	
+	public Cozinha getCozinha() {
+		return cozinha;
+	}
+
+	public void setCozinha(Cozinha cozinha) {
+		this.cozinha = cozinha;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
