@@ -6,9 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.algafood.EstadoRepository;
 import com.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algafood.domain.model.Estado;
+import com.algafood.domain.repository.EstadoRepository;
 
 @Service
 public class CadastroEstadoService {

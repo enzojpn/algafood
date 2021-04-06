@@ -1,4 +1,4 @@
-package com.algafood;
+package com.algafood.domain.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -6,11 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.algafood.CozinhaRepository;
-import com.algafood.RestauranteRepository;
 import com.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algafood.domain.model.Cozinha;
 import com.algafood.domain.model.Restaurante;
+import com.algafood.domain.repository.CozinhaRepository;
+import com.algafood.domain.repository.RestauranteRepository;
 
 @Service
 public class CadastroRestauranteService {
