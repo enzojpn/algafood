@@ -23,6 +23,8 @@ import com.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algafood.domain.model.Restaurante;
 import com.algafood.domain.repository.RestauranteRepository;
 import com.algafood.domain.service.CadastroRestauranteService;
+import com.algafood.infrastructure.repository.spec.RestauranteComFreteGratisSpec;
+import com.algafood.infrastructure.repository.spec.RestauranteComNomeSemelhanteSpec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
@@ -84,7 +86,16 @@ public class RestauranteController {
 	}
 	@GetMapping("/por-nome-frete")
 	public List<Restaurante> porNomeFrete(String nome, BigDecimal freteInicial, BigDecimal freteFinal) {
-		return restauranteRepository.find(nome, freteInicial,freteFinal);
+		return restauranteRepository.findCriteria(nome, freteInicial,freteFinal);
+	}
+
+	@GetMapping("/com-frete-gratis")
+	public List<Restaurante> porNomeFrete(String nome) {
+		
+		RestauranteComFreteGratisSpec comFreteGratis = new RestauranteComFreteGratisSpec();
+		RestauranteComNomeSemelhanteSpec comNomeSemelhante =  new RestauranteComNomeSemelhanteSpec(nome);
+		
+		return restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante));
 	}
 
 	@PatchMapping("/{restauranteId}")
