@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.algafood.domain.model.Restaurante;
 
-public interface RestauranteRepository  extends JpaRepository<Restaurante, Long>, RestauranteRepositoryQueries, JpaSpecificationExecutor<Restaurante>{
+public interface RestauranteRepository  extends CustomRepository<Restaurante, Long>, RestauranteRepositoryQueries, JpaSpecificationExecutor<Restaurante>{
 
 	List<Restaurante> consultarPorNome(String nome, @Param("id") Long cozinha);
 	 

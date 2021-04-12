@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.algafood.domain.exception.EntidadeEmUsoException;
 import com.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algafood.domain.model.Cozinha;
+import com.algafood.domain.model.Restaurante;
 import com.algafood.domain.repository.CozinhaRepository;
 import com.algafood.domain.service.CadastroCozinhaService;
 
@@ -32,19 +33,19 @@ import com.algafood.domain.service.CadastroCozinhaService;
 public class CozinhaController {
 
 	@Autowired
-	CozinhaRepository repository;
+	CozinhaRepository cozinhaRepository;
 
 	@Autowired
 	CadastroCozinhaService cadastroCozinha;
 
 	@GetMapping
 	public List<Cozinha> listar() {
-		return repository.findAll();
+		return cozinhaRepository.findAll();
 	}
 
 	@GetMapping("/{cozinhaID}")
 	public ResponseEntity<Optional<Cozinha>> Busca(@PathVariable Long cozinhaID) {
-		Optional<Cozinha> cozinha = repository.findById(cozinhaID);
+		Optional<Cozinha> cozinha = cozinhaRepository.findById(cozinhaID);
 
 		if (!cozinha.isEmpty()) {
 			return ResponseEntity.ok(cozinha);
@@ -66,7 +67,7 @@ public class CozinhaController {
 
 	@PutMapping("/{cozinhaId}")
 	public ResponseEntity<Cozinha> altera(@PathVariable Long cozinhaId, @RequestBody Cozinha cozinha) {
-		Optional<Cozinha> cozinhaAtual = repository.findById(cozinhaId);
+		Optional<Cozinha> cozinhaAtual = cozinhaRepository.findById(cozinhaId);
 
 		if (cozinhaAtual.isPresent()) {
 			BeanUtils.copyProperties(cozinha, cozinhaAtual.get(), "id");
@@ -75,7 +76,10 @@ public class CozinhaController {
 		}
 		return ResponseEntity.notFound().build();
 	}
-
+	@GetMapping("/primeiro")
+	public Cozinha primeiro() {
+		return cozinhaRepository.buscarPrimeiro().get();
+	}
 	@DeleteMapping("/{cozinhaId}")
 	public ResponseEntity<Cozinha> remove(@PathVariable Long cozinhaId) {
 		try {

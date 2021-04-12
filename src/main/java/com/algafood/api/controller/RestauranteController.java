@@ -23,8 +23,7 @@ import com.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algafood.domain.model.Restaurante;
 import com.algafood.domain.repository.RestauranteRepository;
 import com.algafood.domain.service.CadastroRestauranteService;
-import com.algafood.infrastructure.repository.spec.RestauranteComFreteGratisSpec;
-import com.algafood.infrastructure.repository.spec.RestauranteComNomeSemelhanteSpec;
+import com.algafood.infrastructure.repository.spec.RestauranteSpecs;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
@@ -79,23 +78,27 @@ public class RestauranteController {
 
 		return ResponseEntity.notFound().build();
 	}
-	
+
 	@GetMapping("/consultar-nome")
 	public List<Restaurante> consultarPorNome(String nome, Long cozinhaId) {
 		return restauranteRepository.consultarPorNome(nome, cozinhaId);
 	}
+
 	@GetMapping("/por-nome-frete")
 	public List<Restaurante> porNomeFrete(String nome, BigDecimal freteInicial, BigDecimal freteFinal) {
-		return restauranteRepository.findCriteria(nome, freteInicial,freteFinal);
+		return restauranteRepository.findCriteria(nome, freteInicial, freteFinal);
 	}
 
-	@GetMapping("/com-frete-gratis")
-	public List<Restaurante> porNomeFrete(String nome) {
-		
-		RestauranteComFreteGratisSpec comFreteGratis = new RestauranteComFreteGratisSpec();
-		RestauranteComNomeSemelhanteSpec comNomeSemelhante =  new RestauranteComNomeSemelhanteSpec(nome);
-		
-		return restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante));
+	@GetMapping("/por-frete-gratis")
+	public List<Restaurante> comFreteGratis(String nome) {
+
+		return restauranteRepository.findComFreteGratis(nome);
+				
+	}
+	
+	@GetMapping("/primeiro")
+	public Restaurante primeiro() {
+		return restauranteRepository.buscarPrimeiro().get();
 	}
 
 	@PatchMapping("/{restauranteId}")
@@ -113,20 +116,19 @@ public class RestauranteController {
 	}
 
 	private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino) {
-		ObjectMapper objectMapper= new ObjectMapper();
-		Restaurante restauranteOrigem  = objectMapper.convertValue(dadosOrigem, Restaurante.class);
+		ObjectMapper objectMapper = new ObjectMapper();
+		Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
 
 		dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
-			Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);	
+			Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
 			field.setAccessible(true);
 			Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
-			
+
 			System.out.println(nomePropriedade + " :  " + valorPropriedade + " = " + novoValor);
 			ReflectionUtils.setField(field, restauranteDestino, novoValor);
-			
+
 		});
 
 	}
-
 
 }
