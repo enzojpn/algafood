@@ -13,9 +13,7 @@ public class FormaPagamento {
 	private Long id;
 	
 	private String descricao;
-
-	
-	
+ 
 	public Long getId() {
 		return id;
 	}
