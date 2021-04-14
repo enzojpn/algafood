@@ -5,13 +5,7 @@ insert into cozinha (nome) values ('Japonesa');
 insert into estado (nome) values ('SP');
 insert into estado (nome) values ('PR');
 insert into estado (nome) values ('MG');
-insert into restaurante (nome,taxa_frete , cozinha_id) values ('Thai doidera', 12.1, 1);
-insert into restaurante (nome,taxa_frete , cozinha_id) values ('Thailandia', 10.1, 1);
-insert into restaurante (nome,taxa_frete , cozinha_id) values ('yukyuk', 1.1, 1);
-insert into restaurante (nome,taxa_frete , cozinha_id) values ('lum', 0, 1);
-insert into restaurante (nome,taxa_frete , cozinha_id) values ('cef', 2.1, 2);
-insert into restaurante (nome,taxa_frete , cozinha_id) values ('leef', 0, 2);
-insert into restaurante (nome,taxa_frete , cozinha_id) values ('maiori', 0, 2);
+
 
 insert into cidade (nome, estado_id) values ('São Paulo' , 1);
 insert into cidade (nome, estado_id) values ('São Roque' , 1);
@@ -19,6 +13,13 @@ insert into cidade (nome, estado_id) values ('Londrina' , 2);
 insert into cidade (nome, estado_id) values ('Curitiba' , 2);
 insert into cidade (nome, estado_id) values ('Uberaba' , 3);
 
+
+insert into restaurante ( endereco_bairro, endereco_cep, endereco_complemento, endereco_logradouro, endereco_numero, nome, taxa_frete, cozinha_id, endereco_cidade_id) values ('Parada inglesa', '1244230', '5423','rua raposo tavares', '412', 'Pizzaria tomas' , 12 , 1, 2);
+insert into restaurante ( endereco_bairro, endereco_cep, endereco_complemento, endereco_logradouro, endereco_numero, nome, taxa_frete, cozinha_id, endereco_cidade_id) values ('Santana', '11221122', '4512','rua caninda', '124', 'Pizzaria canono' , 12 , 1 ,1);
+insert into restaurante ( endereco_bairro, endereco_cep, endereco_complemento, endereco_logradouro, endereco_numero, nome, taxa_frete, cozinha_id, endereco_cidade_id) values ('Imirim', '123123', '133','rua raposo  joroge', '124', 'veg sas' , 22 , 1 ,1);
+insert into restaurante ( endereco_bairro, endereco_cep, endereco_complemento, endereco_logradouro, endereco_numero, nome, taxa_frete, cozinha_id, endereco_cidade_id) values ('Parada inglesa', '333344412', '333','rua jorege belho', '42', 'midori' , 0 , 2 , 2);
+insert into restaurante ( endereco_bairro, endereco_cep, endereco_complemento, endereco_logradouro, endereco_numero, nome, taxa_frete, cozinha_id, endereco_cidade_id) values ('Santana Parana', '21414124', '123','rua anacleto campane', '412', 'ceef' , 2 , 3 , 1);
+insert into restaurante ( endereco_bairro, endereco_cep, endereco_complemento, endereco_logradouro, endereco_numero, nome, taxa_frete, cozinha_id, endereco_cidade_id) values ('Vila ipirang', '12412414', '222','rua augusta', '3', 'tuk tuk' , 0 , 3 ,3);
 
 
 insert into forma_pagamento (id, descricao) values (1, 'Cartão de crédito');
