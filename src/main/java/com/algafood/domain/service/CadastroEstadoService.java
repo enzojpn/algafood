@@ -13,6 +13,7 @@ import com.algafood.domain.repository.EstadoRepository;
 @Service
 public class CadastroEstadoService {
 
+	private static final String MSG_ESTADO_NAO_EXISTE = "estado não existente com id igual %d ";
 	@Autowired
 	private EstadoRepository estadoRepository;
 
@@ -23,8 +24,8 @@ public class CadastroEstadoService {
 	public Estado buscar(Long estadoId) {
 		Optional<Estado> estado = estadoRepository.findById(estadoId);
 		if (estado.isEmpty()) {
-			throw new EntidadeNaoEncontradaException(String.format("estado não existente com id igual %d ", estadoId));
+			throw new EntidadeNaoEncontradaException(String.format(MSG_ESTADO_NAO_EXISTE, estadoId));
 		}
-		return estadoRepository.findById(estadoId).get();
+		return estado.get();
 	}
 }
