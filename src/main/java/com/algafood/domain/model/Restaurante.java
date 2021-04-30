@@ -57,7 +57,8 @@ public class Restaurante {
 	@UpdateTimestamp
 	private LocalDateTime dataAtualizacao;
 	
-	@OneToMany
+	@JsonIgnore
+	@OneToMany(mappedBy = "restaurante")
 	private List<Produto> produtos;
 	
 	public Long getId() {

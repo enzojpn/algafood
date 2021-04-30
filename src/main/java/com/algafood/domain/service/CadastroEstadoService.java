@@ -21,11 +21,9 @@ public class CadastroEstadoService {
 		return estadoRepository.findAll();
 	}
 
-	public Estado buscar(Long estadoId) {
-		Optional<Estado> estado = estadoRepository.findById(estadoId);
-		if (estado.isEmpty()) {
-			throw new EntidadeNaoEncontradaException(String.format(MSG_ESTADO_NAO_EXISTE, estadoId));
-		}
-		return estado.get();
+	public Estado buscarOuFalhar(Long estadoId) {
+		return estadoRepository.findById(estadoId).orElseThrow(() ->	
+			new EntidadeNaoEncontradaException(String.format(MSG_ESTADO_NAO_EXISTE, estadoId)));
+		
 	}
 }

@@ -33,6 +33,6 @@ public class EstadoController {
 
 	@GetMapping("/{estadoId}")
 	public Estado buscar(@PathVariable Long estadoId) {
-			return  cadastroEstado.buscar(estadoId );
+			return  cadastroEstado.buscarOuFalhar(estadoId );
 	}
 }

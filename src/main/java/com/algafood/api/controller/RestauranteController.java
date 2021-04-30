@@ -42,13 +42,10 @@ public class RestauranteController {
 	}
 
 	@GetMapping("/{restauranteId}")
-	public ResponseEntity<Optional<Restaurante>> buscar(@PathVariable Long restauranteId) {
+	public Restaurante buscar(@PathVariable Long restauranteId) {
 
-		Optional<Restaurante> restaurante = restauranteRepository.findById(restauranteId);
-		if (restaurante.isPresent()) {
-			return ResponseEntity.ok(restaurante);
-		}
-		return ResponseEntity.notFound().build();
+		return cadastroRestaurante.buscarOuFalhar(restauranteId);
+
 	}
 
 	@PostMapping
@@ -68,7 +65,8 @@ public class RestauranteController {
 
 		if (restauranteAtual.isPresent()) {
 			try {
-				BeanUtils.copyProperties(restaurante, restauranteAtual.get(), "id" , "formasPagamento", "endereco", "dataCadastro", "produtos");
+				BeanUtils.copyProperties(restaurante, restauranteAtual.get(), "id", "formasPagamento", "endereco",
+						"dataCadastro", "produtos");
 
 				cadastroRestaurante.salvar(restauranteAtual.get());
 				return ResponseEntity.ok(restauranteAtual);
@@ -94,9 +92,9 @@ public class RestauranteController {
 	public List<Restaurante> comFreteGratis(String nome) {
 
 		return restauranteRepository.findComFreteGratis(nome);
-				
+
 	}
-	
+
 	@GetMapping("/primeiro")
 	public Restaurante primeiro() {
 		return restauranteRepository.buscarPrimeiro().get();

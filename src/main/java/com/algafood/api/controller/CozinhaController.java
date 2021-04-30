@@ -43,9 +43,9 @@ public class CozinhaController {
 		return cozinhaRepository.findAll();
 	}
 
-	@GetMapping("/{cozinhaID}")
-	public Cozinha Busca(@PathVariable Long cozinhaID) {
-		return cadastroCozinha.buscarOuFalhar(cozinhaID);
+	@GetMapping("/{cozinhaId}")
+	public Cozinha Busca(@PathVariable Long cozinhaId) {
+		return cadastroCozinha.buscarOuFalhar(cozinhaId);
 
 		// Exemplo
 		// HttpHeaders headers = new HttpHeaders();
