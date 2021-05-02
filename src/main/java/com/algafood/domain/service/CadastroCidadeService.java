@@ -8,29 +8,41 @@ import org.springframework.stereotype.Service;
 
 import com.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algafood.domain.model.Cidade;
+import com.algafood.domain.model.Estado;
 import com.algafood.domain.repository.CidadeRepository;
+import com.algafood.domain.repository.EstadoRepository;
 
 @Service
 public class CadastroCidadeService {
 
 	private static final String MGS_CIDADE_NAO_ENCONTRADA = "Cidade não encontrada com o código %d";
+	private static final String MGS_ESTADO_NAO_ENCONTRADO = "Estado não encontrado com o código %d";
 
 	@Autowired
 	CidadeRepository cidadeRepository;
+
+	@Autowired
+	EstadoRepository estadoRepository;
 
 	public List<Cidade> listar() {
 		return cidadeRepository.findAll();
 	}
 
-	public Cidade busca(Long cidadeId) {
+	public Cidade buscarOuFalhar(Long cidadeId) {
 
-		Optional<Cidade> cidade = cidadeRepository.findById(cidadeId);
-		if (cidade.isEmpty()) {
-			throw new EntidadeNaoEncontradaException(String.format(MGS_CIDADE_NAO_ENCONTRADA, cidadeId));
-		}
+		return cidadeRepository.findById(cidadeId).orElseThrow(
+				() -> new EntidadeNaoEncontradaException(String.format(MGS_CIDADE_NAO_ENCONTRADA, cidadeId)));
 
-		return cidade.get();
 
 	}
 
+	public Cidade salva(Cidade cidade) {
+
+		Long estadoId = cidade.getEstado().getId();
+		Estado estado = estadoRepository.findById(estadoId).orElseThrow(
+				() -> new EntidadeNaoEncontradaException(String.format(MGS_CIDADE_NAO_ENCONTRADA, estadoId)));
+
+		cidade.setEstado(estado);
+		return cidadeRepository.save(cidade);
+	}
 }

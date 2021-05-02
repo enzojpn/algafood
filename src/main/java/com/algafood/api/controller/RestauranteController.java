@@ -20,11 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algafood.domain.exception.EntidadeNaoEncontradaException;
-import com.algafood.domain.model.FormaPagamento;
+import com.algafood.domain.exception.NegocioException;
 import com.algafood.domain.model.Restaurante;
 import com.algafood.domain.repository.RestauranteRepository;
 import com.algafood.domain.service.CadastroRestauranteService;
-import com.algafood.infrastructure.repository.spec.RestauranteSpecs;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
@@ -49,12 +48,11 @@ public class RestauranteController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> salvar(@RequestBody Restaurante restaurante) {
+	public Restaurante salvar(@RequestBody Restaurante restaurante) {
 		try {
-			cadastroRestaurante.salvar(restaurante);
-			return ResponseEntity.ok(restaurante);
+			return cadastroRestaurante.salvar(restaurante);
 		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
+			throw new NegocioException(e.getMessage());
 		}
 
 	}
