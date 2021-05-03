@@ -6,7 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.algafood.domain.exception.CidadeNaoEncontradoException;
 import com.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.algafood.domain.model.Cidade;
 import com.algafood.domain.model.Estado;
 import com.algafood.domain.repository.CidadeRepository;
@@ -31,7 +33,7 @@ public class CadastroCidadeService {
 	public Cidade buscarOuFalhar(Long cidadeId) {
 
 		return cidadeRepository.findById(cidadeId).orElseThrow(
-				() -> new EntidadeNaoEncontradaException(String.format(MGS_CIDADE_NAO_ENCONTRADA, cidadeId)));
+				() -> new CidadeNaoEncontradoException(cidadeId) );
 
 
 	}
@@ -40,7 +42,7 @@ public class CadastroCidadeService {
 
 		Long estadoId = cidade.getEstado().getId();
 		Estado estado = estadoRepository.findById(estadoId).orElseThrow(
-				() -> new EntidadeNaoEncontradaException(String.format(MGS_CIDADE_NAO_ENCONTRADA, estadoId)));
+				() -> new EstadoNaoEncontradoException( estadoId) );
 
 		cidade.setEstado(estado);
 		return cidadeRepository.save(cidade);
