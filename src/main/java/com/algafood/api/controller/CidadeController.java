@@ -58,15 +58,5 @@ public class CidadeController {
 			throw new NegocioException(e.getMessage());
 		}
 	}
-	
-	@ExceptionHandler(EntidadeNaoEncontradaException.class)
-	public ResponseEntity<?> tratarEntidadeNaoEncontradoException(EntidadeNaoEncontradaException e){
-		Problema problema = new Problema.Builder().dataHora(LocalDateTime.now()).mensagem("ae habibpz").build();
-		return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(problema);
-	}
-	
-	@ExceptionHandler(NegocioException.class)
-	public ResponseEntity<?> tratarNegocioExpception(NegocioException e){
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-	}
+
 }
