@@ -7,7 +7,7 @@ public class CidadeNaoEncontradoException extends EntidadeNaoEncontradaException
 	public CidadeNaoEncontradoException(String mensagem) {
 		super(mensagem);
 	}
-
+ 
 	public CidadeNaoEncontradoException(Long cidadeId) {
 		super(String.format("Cidade não encontrada com o código %d", cidadeId));
 	}
