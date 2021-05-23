@@ -10,7 +10,8 @@ public class Problem {
 	private String type;
 	private String title;
 	private String detail;
-	
+
+	private String userMessge;
 	private Problem() {
 
 	}
@@ -22,6 +23,7 @@ public class Problem {
 		private String title;
 		private String detail;
 		
+		private String userMessge;
 
 		public Builder() {
 
@@ -46,12 +48,18 @@ public class Problem {
 			return this;
 		}
 
+		public Builder userMessage(String userMessage) {
+			this.userMessge = userMessage;
+			return this;
+		}
+
 		public Problem build() {
 			Problem problem = new Problem();
 			problem.status = this.status;
 			problem.type = this.type;
 			problem.title = this.title;
 			problem.detail = this.detail;
+			problem.userMessge = this.userMessge;
 			return problem;
 		}
 	}
@@ -86,6 +94,14 @@ public class Problem {
 
 	public void setDetail(String detail) {
 		this.detail = detail;
+	}
+
+	public String getUserMessge() {
+		return userMessge;
+	}
+
+	public void setUserMessge(String userMessge) {
+		this.userMessge = userMessge;
 	}
 
 	
