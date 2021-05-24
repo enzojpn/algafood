@@ -1,5 +1,7 @@
 package com.algafood.api.exceptionhandler;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -12,6 +14,8 @@ public class Problem {
 	private String detail;
 
 	private String userMessge;
+	private LocalDateTime timestamp;
+	
 	private Problem() {
 
 	}
@@ -24,7 +28,8 @@ public class Problem {
 		private String detail;
 		
 		private String userMessge;
-
+		private LocalDateTime timestamp;
+		
 		public Builder() {
 
 		}
@@ -53,6 +58,11 @@ public class Problem {
 			return this;
 		}
 
+		public Builder timestamp(LocalDateTime timestamp) {
+			this.timestamp = timestamp;
+			return this;
+		}
+
 		public Problem build() {
 			Problem problem = new Problem();
 			problem.status = this.status;
@@ -60,6 +70,7 @@ public class Problem {
 			problem.title = this.title;
 			problem.detail = this.detail;
 			problem.userMessge = this.userMessge;
+			problem.timestamp = this.timestamp;
 			return problem;
 		}
 	}
@@ -102,6 +113,14 @@ public class Problem {
 
 	public void setUserMessge(String userMessge) {
 		this.userMessge = userMessge;
+	}
+
+	public LocalDateTime getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(LocalDateTime timestamp) {
+		this.timestamp = timestamp;
 	}
 
 	
