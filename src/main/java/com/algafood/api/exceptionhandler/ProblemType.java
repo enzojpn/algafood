@@ -2,6 +2,8 @@ package com.algafood.api.exceptionhandler;
 
 public enum ProblemType {
 
+	DADOS_INVALIDOS("/dados-invalidos", "Dados inválidos"),
+
 	MENSAGEM_INCOMPREENSIVEL("/mensagem-incompreensivel", "Mensagem incompreensível"),
 	RECURSO_NAO_ENCONTRADO("/recurso-nao-encontrado","recurso não encontrado"),
 	ENTIDADE_EM_USO("/entidade-em-uso", "entidade em uso"),

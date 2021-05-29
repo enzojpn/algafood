@@ -1,35 +1,92 @@
 package com.algafood.api.exceptionhandler;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(Include.NON_NULL)
 public class Problem {
-	
+
 	private Integer status;
 	private String type;
 	private String title;
 	private String detail;
 
-	private String userMessge;
+	private String userMessage;
 	private LocalDateTime timestamp;
-	
+	private List<Field> fields;
+
 	private Problem() {
 
 	}
 
+	public static class Field {
+
+		private String name;
+		private String userMessage;
+
+		public Field() {
+
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public String getUserMessage() {
+			return userMessage;
+		}
+
+		public void setUserMessage(String userMessage) {
+			this.userMessage = userMessage;
+		}
+
+		public static class Builder {
+
+			private String name;
+			private String userMessage;
+
+			public Builder() {
+
+			}
+
+			public Builder name(String name) {
+				this.name = name;
+				return this;
+			}
+
+			public Builder userMessage(String userMessage) {
+				this.userMessage = userMessage;
+				return this;
+			}
+
+			public Field build() {
+				Field field = new Field();
+				field.name = this.name;
+				field.userMessage = this.userMessage;
+
+				return field;
+			}
+		}
+
+	}
+
 	public static class Builder {
-		
+
 		private Integer status;
 		private String type;
 		private String title;
 		private String detail;
-		
 		private String userMessge;
 		private LocalDateTime timestamp;
-		
+		private List<Field> fields;
+
 		public Builder() {
 
 		}
@@ -43,6 +100,7 @@ public class Problem {
 			this.type = type;
 			return this;
 		}
+
 		public Builder title(String title) {
 			this.title = title;
 			return this;
@@ -63,14 +121,20 @@ public class Problem {
 			return this;
 		}
 
+		public Builder fields(List<Field> fields) {
+			this.fields = fields;
+			return this;
+		}
+
 		public Problem build() {
 			Problem problem = new Problem();
 			problem.status = this.status;
 			problem.type = this.type;
 			problem.title = this.title;
 			problem.detail = this.detail;
-			problem.userMessge = this.userMessge;
+			problem.userMessage = this.userMessge;
 			problem.timestamp = this.timestamp;
+			problem.fields = this.fields;
 			return problem;
 		}
 	}
@@ -108,11 +172,11 @@ public class Problem {
 	}
 
 	public String getUserMessge() {
-		return userMessge;
+		return userMessage;
 	}
 
 	public void setUserMessge(String userMessge) {
-		this.userMessge = userMessge;
+		this.userMessage = userMessge;
 	}
 
 	public LocalDateTime getTimestamp() {
@@ -123,5 +187,20 @@ public class Problem {
 		this.timestamp = timestamp;
 	}
 
-	
+	public String getUserMessage() {
+		return userMessage;
+	}
+
+	public void setUserMessage(String userMessage) {
+		this.userMessage = userMessage;
+	}
+
+	public List<Field> getFields() {
+		return fields;
+	}
+
+	public void setFields(List<Field> fields) {
+		this.fields = fields;
+	}
+
 }
