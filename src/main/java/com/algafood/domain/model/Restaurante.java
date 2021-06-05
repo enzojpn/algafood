@@ -13,11 +13,16 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.Valid;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.algafood.Groups.CadastroRestaurante;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Entity;
@@ -31,13 +36,16 @@ public class Restaurante {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
+	@NotBlank(groups = CadastroRestaurante.class)
 	@Column(nullable = false)
 	private String nome;
 
+	@PositiveOrZero(groups = CadastroRestaurante.class)
 	@Column(name = "taxa_frete")
 	private BigDecimal taxaFrete;
 
+	@Valid
+	@NotNull(groups = CadastroRestaurante.class)
 	@ManyToOne
 	private Cozinha cozinha;
 	 
