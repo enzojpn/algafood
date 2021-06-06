@@ -3,6 +3,8 @@ package com.algafood.api.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -55,7 +57,7 @@ public class CozinhaController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cozinha adiciona(@RequestBody Cozinha cozinha) {
+	public Cozinha adiciona(@RequestBody @Valid Cozinha cozinha) {
 
 		return cadastroCozinha.salvar(cozinha);
 	}
