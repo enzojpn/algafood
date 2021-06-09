@@ -7,12 +7,12 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.algafood.Groups.CadastroRestaurante; 
+import com.algafood.Groups;
 
 @Entity
 public class Cozinha {
 
-	@NotNull(groups = CadastroRestaurante.class)
+	@NotNull(groups = Groups.CozinhaId.class)
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
