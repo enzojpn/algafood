@@ -12,7 +12,6 @@ import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 
 import com.algafood.Groups;
-import com.sun.tools.doclint.Messages.Group;
 
 @Entity
 public class Cidade {

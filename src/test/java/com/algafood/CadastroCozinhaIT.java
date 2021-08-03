@@ -7,7 +7,10 @@ import javax.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.RestDocsRestAssuredConfigurationCustomizer;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 
 import com.algafood.domain.exception.CozinhaNaoEncontradoException;
 import com.algafood.domain.exception.EntidadeEmUsoException;
@@ -15,12 +18,26 @@ import com.algafood.domain.exception.NegocioException;
 import com.algafood.domain.model.Cozinha;
 import com.algafood.domain.service.CadastroCozinhaService;
 
-@SpringBootTest
-class CadastroCozinhaIntegrationTests {
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+class CadastroCozinhaIT {
 
 	@Autowired
 	CadastroCozinhaService cozinhaService;
 
+	@LocalServerPort
+	private int port;
+
+	@Test
+	public void deveRetornarStatus200_QuandoConsultarCozinha() {
+		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+
+		RestAssured.given().basePath("/cozinhas").port(port).accept(ContentType.JSON).when().get().then()
+				.statusCode(HttpStatus.OK.value());
+	}
+/* 
 	@Test
 	public void testarCadastroDeCozinhaComSucesso() {
 		// cenario
@@ -53,10 +70,9 @@ class CadastroCozinhaIntegrationTests {
 
 	@Test
 	public void deveFalhar_QuandoExcluirCozinhaEmUso() {
-		EntidadeEmUsoException erroEsperado = Assertions.assertThrows(EntidadeEmUsoException.class,
-				() -> {
-					cozinhaService.remove(4L);
-				});
+		EntidadeEmUsoException erroEsperado = Assertions.assertThrows(EntidadeEmUsoException.class, () -> {
+			cozinhaService.remove(4L);
+		});
 		assertThat(erroEsperado).isNotNull();
 
 	}
@@ -70,4 +86,5 @@ class CadastroCozinhaIntegrationTests {
 		assertThat(erroEsperado).isNotNull();
 
 	}
+	*/
 }

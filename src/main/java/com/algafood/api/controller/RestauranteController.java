@@ -106,6 +106,7 @@ public class RestauranteController {
 		return restauranteRepository.buscarPrimeiro().get();
 	}
 
+	/*
 	@PatchMapping("/{restauranteId}")
 	public ResponseEntity<?> alterarParcial(@PathVariable Long restauranteId, @RequestBody Map<String, Object> campos , HttpServletRequest request) {
 
@@ -119,7 +120,7 @@ public class RestauranteController {
 
 		return alterar(restauranteId, restauranteAtual.get());
 	}
-
+*/
 	private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
 		ServletServerHttpRequest servletHttpRequest = new ServletServerHttpRequest(request);
 		try {

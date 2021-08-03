@@ -6,9 +6,5 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @SpringBootTest
 class Algafood2ApplicationTests {
-
-	@Test
-	void contextLoads() {
-	}
-
+ 
 }
