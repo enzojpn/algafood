@@ -19,25 +19,28 @@ import org.springframework.boot.test.autoconfigure.restdocs.RestDocsRestAssuredC
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.TestPropertySource;
 
 import com.algafood.domain.exception.CozinhaNaoEncontradoException;
 import com.algafood.domain.exception.EntidadeEmUsoException;
 import com.algafood.domain.exception.NegocioException;
 import com.algafood.domain.model.Cozinha;
 import com.algafood.domain.service.CadastroCozinhaService;
+import com.algafood.utils.DatabaseCleaner;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestPropertySource("/application-test.properties")
 class CadastroCozinhaIT {
 
 	@Autowired
-	CadastroCozinhaService cozinhaService;
+	private CadastroCozinhaService cozinhaService;
 
-	@Autowired
-	Flyway flyway;
-
+	@Autowired 
+	private DatabaseCleaner databaseCleaner;
+	
 	@LocalServerPort
 	private int port;
 
@@ -46,8 +49,10 @@ class CadastroCozinhaIT {
 		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
 		RestAssured.port = port;
 		RestAssured.basePath = "/cozinhas";
-		flyway.migrate();
+		databaseCleaner.clearTables();
+		prepararDados();
 	}
+
 	@Test
 	public void testRetornar201_QuandoCadastrarCozinha() {
 
@@ -71,11 +76,25 @@ class CadastroCozinhaIT {
 
 
 	@Test
-	public void testeTer5Cozinhas_QuandoConsultarCozinha() {
+	public void testeTer4Cozinhas_QuandoConsultarCozinha() {
 
-		RestAssured.given().accept(ContentType.JSON).when().get().then().body("", Matchers.hasSize(5));
+		RestAssured.given().accept(ContentType.JSON).when().get().then().body("", Matchers.hasSize(4));
 	}
-
+	
+	private void prepararDados() {
+		Cozinha cozinha1 =  new Cozinha();
+		cozinha1.setNome("Tailandesa");
+		cozinhaService.salvar(cozinha1);
+		Cozinha cozinha2 =  new Cozinha();
+		cozinha2.setNome("Americana");
+		cozinhaService.salvar(cozinha2);
+		Cozinha cozinha3 =  new Cozinha();
+		cozinha3.setNome("Mexicana");
+		cozinhaService.salvar(cozinha3);
+		Cozinha cozinha4 =  new Cozinha();
+		cozinha4.setNome("Japonesa");
+		cozinhaService.salvar(cozinha4);
+	}
 	/*
 	 * @Test public void testarCadastroDeCozinhaComSucesso() { // cenario Cozinha
 	 * novaCozinha = new Cozinha(); novaCozinha.setNome("Chinesa");
