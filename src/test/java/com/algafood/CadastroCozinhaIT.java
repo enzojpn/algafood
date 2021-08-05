@@ -27,6 +27,7 @@ import com.algafood.domain.exception.NegocioException;
 import com.algafood.domain.model.Cozinha;
 import com.algafood.domain.service.CadastroCozinhaService;
 import com.algafood.utils.DatabaseCleaner;
+import com.algafood.utils.ResourceUtils;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -34,6 +35,11 @@ import io.restassured.http.ContentType;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("/application-test.properties")
 class CadastroCozinhaIT {
+	private static final int COZINHA_ID_INEXISTENTE = 100;
+
+	private Cozinha cozinhaJaponesa;
+	private int quantidadeCozinhasCadastradas;
+	private String jsonCorretoCozinha;
 
 	@Autowired
 	private CadastroCozinhaService cozinhaService;
@@ -49,15 +55,15 @@ class CadastroCozinhaIT {
 		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
 		RestAssured.port = port;
 		RestAssured.basePath = "/cozinhas";
+		jsonCorretoCozinha  = ResourceUtils.getContentFromResource( "/cozinha.json");
 		databaseCleaner.clearTables();
 		prepararDados();
 	}
 
 	@Test
 	public void testRetornar201_QuandoCadastrarCozinha() {
-
 		RestAssured.given().
-			body(" {\"nome\":\"Nórdica\"} ").contentType(ContentType.JSON)
+			body(jsonCorretoCozinha).contentType(ContentType.JSON)
 			.accept(ContentType.JSON)
 		.when().post().
 		then().statusCode(HttpStatus.CREATED.value());
@@ -71,17 +77,29 @@ class CadastroCozinhaIT {
 	@Test
 	public void deveConterCozinhaJaponesa_QuandoConsultarCozinha() {
 
-		RestAssured.given().accept(ContentType.JSON).when().get().then().body("nome", hasItem("Japonesa"));
+		RestAssured.given().accept(ContentType.JSON).when().get().then().body("nome", hasItem(cozinhaJaponesa.getNome()));
 	}
 
 
 	@Test
-	public void testeTer4Cozinhas_QuandoConsultarCozinha() {
+	public void testeTerQuantidadeCorretaCozinhas_QuandoConsultarCozinha() {
 
-		RestAssured.given().accept(ContentType.JSON).when().get().then().body("", Matchers.hasSize(4));
+		RestAssured.given().accept(ContentType.JSON).when().get().then().body("", Matchers.hasSize(quantidadeCozinhasCadastradas));
+	}
+
+	@Test
+	public void testeNaoEncontrarCozinha_QuandoConsultarCozinhaInexistente() {
+
+		RestAssured.given().
+			pathParam("cozinhaId", COZINHA_ID_INEXISTENTE).accept(ContentType.JSON)
+		.when().get("/{cozinhaId}")
+		.then()
+		.statusCode(HttpStatus.NOT_FOUND.value());
 	}
 	
 	private void prepararDados() {
+		quantidadeCozinhasCadastradas = 4;
+
 		Cozinha cozinha1 =  new Cozinha();
 		cozinha1.setNome("Tailandesa");
 		cozinhaService.salvar(cozinha1);
@@ -94,6 +112,7 @@ class CadastroCozinhaIT {
 		Cozinha cozinha4 =  new Cozinha();
 		cozinha4.setNome("Japonesa");
 		cozinhaService.salvar(cozinha4);
+		cozinhaJaponesa = cozinha4;
 	}
 	/*
 	 * @Test public void testarCadastroDeCozinhaComSucesso() { // cenario Cozinha
