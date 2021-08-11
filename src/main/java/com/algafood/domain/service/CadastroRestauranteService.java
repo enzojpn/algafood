@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.algafood.domain.exception.CozinhaNaoEncontradoException;
 import com.algafood.domain.exception.RestauranteNaoEncontradoException;
@@ -31,6 +32,7 @@ public class CadastroRestauranteService {
 				.orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));
 	}
 
+	@Transactional
 	public Restaurante salvar(Restaurante restaurante) {
 		Long cozinhaId = restaurante.getCozinha().getId();
 		Cozinha cozinha = cozinhaRepository.findById(cozinhaId).orElseThrow(

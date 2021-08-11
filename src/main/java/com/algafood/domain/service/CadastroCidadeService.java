@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.algafood.domain.exception.CidadeNaoEncontradoException;
 import com.algafood.domain.exception.EntidadeNaoEncontradaException;
@@ -38,6 +39,7 @@ public class CadastroCidadeService {
 
 	}
 
+	@Transactional
 	public Cidade salva(Cidade cidade) {
 
 		Long estadoId = cidade.getEstado().getId();
