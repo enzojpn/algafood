@@ -1,10 +1,13 @@
 package com.algafood.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algafood.domain.exception.NegocioException;
 import com.algafood.domain.model.Cidade;
+import com.algafood.domain.repository.CidadeRepository;
 import com.algafood.domain.service.CadastroCidadeService;
 
 @RestController
@@ -24,6 +28,9 @@ public class CidadeController {
 
 	@Autowired
 	CadastroCidadeService cadastroCidade;
+
+	@Autowired
+	CidadeRepository cidadeRepository;
 
 	@GetMapping
 	public List<Cidade> listar() {
@@ -38,7 +45,7 @@ public class CidadeController {
 	@PostMapping
 	public Cidade salvar(@RequestBody @Valid Cidade cidade) {
 		try {
-			cadastroCidade.salva(cidade);
+			cadastroCidade.salvar(cidade);
 		} catch (EntidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
@@ -46,14 +53,22 @@ public class CidadeController {
 	}
 
 	@PutMapping("/{cidadeId}")
-	public Cidade alterar(@RequestBody Cidade cidade, @PathVariable Long cidadeId) {
+	public ResponseEntity<?> alterar(@PathVariable Long cidadeId, @RequestBody @Valid Cidade cidade) {
 
-		try {
+		Optional<Cidade> cidadeAtual = cidadeRepository.findById(cidadeId);
+		if ( cidadeAtual.isPresent()) {
+			try {
+				BeanUtils.copyProperties(cidade, cidadeAtual.get(), "id");
+				cadastroCidade.salvar(cidadeAtual.get());
+				return ResponseEntity.ok(cidadeAtual.get());
 
-			return cadastroCidade.buscarOuFalhar(cidadeId);
-		} catch (EntidadeNaoEncontradaException e) {
-			throw new NegocioException(e.getMessage());
+			} catch (Exception e) {
+				return ResponseEntity.badRequest().body(e.getMessage());
+			}
+
 		}
+		return ResponseEntity.notFound().build();
+
 	}
 
 }

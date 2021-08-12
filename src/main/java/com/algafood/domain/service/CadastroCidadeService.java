@@ -40,7 +40,7 @@ public class CadastroCidadeService {
 	}
 
 	@Transactional
-	public Cidade salva(Cidade cidade) {
+	public Cidade salvar(Cidade cidade) {
 
 		Long estadoId = cidade.getEstado().getId();
 		Estado estado = estadoRepository.findById(estadoId).orElseThrow(

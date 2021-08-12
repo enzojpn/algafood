@@ -12,6 +12,7 @@ import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 
 import com.algafood.Groups;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Cidade {
@@ -23,6 +24,7 @@ public class Cidade {
 	@NotBlank
 	private String nome ;
 	
+	@JsonIgnoreProperties(value = "nome", allowGetters = true)
 	@Valid
 	@NotNull
 	@ManyToOne
