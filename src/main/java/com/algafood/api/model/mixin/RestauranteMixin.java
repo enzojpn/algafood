@@ -21,12 +21,10 @@ public class RestauranteMixin {
 
 	@JsonIgnore
 	private Endereco endereco;
-
-	@JsonIgnore
-	private LocalDateTime dataCadastro;
-
-	@JsonIgnore
-	private LocalDateTime dataAtualizacao;
+ 
+	private OffsetDateTime dataCadastro;
+ 
+	private OffsetDateTime dataAtualizacao;
 
 	@JsonIgnore
 	private List<Produto> produtos;
