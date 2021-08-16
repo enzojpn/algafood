@@ -1,6 +1,6 @@
 package com.algafood.api.model.mixin;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,9 +21,9 @@ public class RestauranteMixin {
 
 	@JsonIgnore
 	private Endereco endereco;
- 
+
 	private OffsetDateTime dataCadastro;
- 
+
 	private OffsetDateTime dataAtualizacao;
 
 	@JsonIgnore
