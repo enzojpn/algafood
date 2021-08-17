@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algafood.api.model.CozinhaModel;
+import com.algafood.api.model.RestauranteModel;
 import com.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algafood.domain.exception.NegocioException;
 import com.algafood.domain.model.Restaurante;
@@ -43,20 +46,20 @@ public class RestauranteController {
 	private CadastroRestauranteService cadastroRestaurante;
 
 	@GetMapping
-	public List<Restaurante> listar() {
-		return cadastroRestaurante.listar();
+	public List<RestauranteModel> listar() {
+		return toCollectionModel(restauranteRepository.findAll());
 	}
 
 	@GetMapping("/{restauranteId}")
-	public Restaurante buscar(@PathVariable Long restauranteId) {
+	public RestauranteModel buscar(@PathVariable Long restauranteId) {
 
-	 
-		return cadastroRestaurante.buscarOuFalhar(restauranteId);
+		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
+		return toModel(restaurante) ;
 
 	}
 
 	@PostMapping
-	public Restaurante salvar(@RequestBody @Valid  Restaurante restaurante) {
+	public Restaurante salvar(@RequestBody @Valid Restaurante restaurante) {
 		try {
 			return cadastroRestaurante.salvar(restaurante);
 		} catch (EntidadeNaoEncontradaException e) {
@@ -107,43 +110,60 @@ public class RestauranteController {
 	}
 
 	/*
-	@PatchMapping("/{restauranteId}")
-	public ResponseEntity<?> alterarParcial(@PathVariable Long restauranteId, @RequestBody Map<String, Object> campos , HttpServletRequest request) {
-
-		Optional<Restaurante> restauranteAtual = restauranteRepository.findById(restauranteId);
-
-		if (restauranteAtual.isEmpty()) {
-			return ResponseEntity.notFound().build();
-		}
-
-		merge(campos, restauranteAtual.get(), request);
-
-		return alterar(restauranteId, restauranteAtual.get());
-	}
-*/
+	 * @PatchMapping("/{restauranteId}") public ResponseEntity<?>
+	 * alterarParcial(@PathVariable Long restauranteId, @RequestBody Map<String,
+	 * Object> campos , HttpServletRequest request) {
+	 * 
+	 * Optional<Restaurante> restauranteAtual =
+	 * restauranteRepository.findById(restauranteId);
+	 * 
+	 * if (restauranteAtual.isEmpty()) { return ResponseEntity.notFound().build(); }
+	 * 
+	 * merge(campos, restauranteAtual.get(), request);
+	 * 
+	 * return alterar(restauranteId, restauranteAtual.get()); }
+	 */
 	private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
 		ServletServerHttpRequest servletHttpRequest = new ServletServerHttpRequest(request);
 		try {
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
-		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
-		Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
+			ObjectMapper objectMapper = new ObjectMapper();
+			objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
+			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+			Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
 
-		dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
-			Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
-			field.setAccessible(true);
-			Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
+			dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
+				Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
+				field.setAccessible(true);
+				Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
 
-			System.out.println(nomePropriedade + " :  " + valorPropriedade + " = " + novoValor);
-			ReflectionUtils.setField(field, restauranteDestino, novoValor);
+				System.out.println(nomePropriedade + " :  " + valorPropriedade + " = " + novoValor);
+				ReflectionUtils.setField(field, restauranteDestino, novoValor);
 
-		});
-		}catch (IllegalArgumentException e){
+			});
+		} catch (IllegalArgumentException e) {
 			Throwable rootCause = ExceptionUtils.getRootCause(e);
-			throw new HttpMessageNotReadableException(e.getMessage(), rootCause, servletHttpRequest );
-			
+			throw new HttpMessageNotReadableException(e.getMessage(), rootCause, servletHttpRequest);
+
 		}
 
 	}
+	
+	private List<RestauranteModel> toCollectionModel(List<Restaurante > restaurantes){
+		return restaurantes.stream().map(restaurante -> toModel(restaurante)).collect(Collectors.toList());
+	}
+
+	private RestauranteModel toModel(Restaurante restaurante) {
+		CozinhaModel cozinhaModel = new CozinhaModel();
+		cozinhaModel.setId(restaurante.getCozinha().getId());
+		cozinhaModel.setName(restaurante.getCozinha().getNome());
+
+		RestauranteModel restauranteModel = new RestauranteModel();
+		restauranteModel.setId(restaurante.getId());
+		restauranteModel.setNome(restaurante.getNome());
+		restauranteModel.setTaxaFrete(restaurante.getTaxaFrete());
+		restauranteModel.setCozinha(cozinhaModel);
+		return restauranteModel;
+	}
+
 
 }
