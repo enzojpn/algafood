@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algafood.api.assembler.RestauranteInputDisassembler;
 import com.algafood.api.assembler.RestauranteModelAssembler;
 import com.algafood.api.model.CozinhaModel;
 import com.algafood.api.model.RestauranteModel;
@@ -49,6 +50,8 @@ public class RestauranteController {
 	private CadastroRestauranteService cadastroRestaurante;
 	@Autowired
 	private RestauranteModelAssembler restauranteModelAssembler;
+	@Autowired
+	private RestauranteInputDisassembler restauranteInputDisassembler;
 
 	@GetMapping
 	public List<RestauranteModel> listar() {
@@ -66,7 +69,7 @@ public class RestauranteController {
 	@PostMapping
 	public Restaurante salvar(@RequestBody @Valid RestauranteInput restauranteInput) {
 		try {
-			Restaurante restaurante = toDomainObject(restauranteInput);
+			Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
 			return cadastroRestaurante.salvar(restaurante);
 		} catch (EntidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
@@ -75,9 +78,9 @@ public class RestauranteController {
 	}
 
 	@PutMapping("/{restauranteId}")
-	public ResponseEntity<?> alterar(@PathVariable Long restauranteId, @RequestBody @Valid Restaurante restaurante) {
+	public ResponseEntity<?> alterar(@PathVariable Long restauranteId, @RequestBody @Valid RestauranteInput restauranteInput) {
 		Optional<Restaurante> restauranteAtual = restauranteRepository.findById(restauranteId);
-
+		Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
 		if (restauranteAtual.isPresent()) {
 			try {
 				BeanUtils.copyProperties(restaurante, restauranteAtual.get(), "id", "formasPagamento", "endereco",
@@ -154,18 +157,5 @@ public class RestauranteController {
 
 	}
 
-	private Restaurante toDomainObject(RestauranteInput restauranteInput) {
-
-		Restaurante restaurante = new Restaurante();
-		restaurante.setNome(restauranteInput.getNome());
-		restaurante.setTaxaFrete(restauranteInput.getTaxaFrete());
-
-		Cozinha cozinha = new Cozinha();
-		cozinha.setId(restauranteInput.getCozinha().getId());
-		restaurante.setCozinha(cozinha);
-
-		return restaurante;
-
-	}
-
+	
 }
