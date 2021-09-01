@@ -15,10 +15,13 @@ insert into cidade (nome, estado_id) values ('Londrina' , 2);
 insert into cidade (nome, estado_id) values ('Curitiba' , 2);
 insert into cidade (nome, estado_id) values ('Uberaba' , 3);
 
-insert into restaurante ( nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values ( 'Java Steakhouse', 12, 3, utc_timestamp, utc_timestamp);
-insert into restaurante ( nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values ( 'Lanchonete do Tio Sam', 11, 4, utc_timestamp, utc_timestamp);
-insert into restaurante ( nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values ( 'Bar da Maria', 6, 4, utc_timestamp, utc_timestamp);
+-- insert into restaurante ( nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values ( 'Java Steakhouse', 12, 3, utc_timestamp, utc_timestamp);
+-- insert into restaurante ( nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values ( 'Lanchonete do Tio Sam', 11, 4, utc_timestamp, utc_timestamp);
+-- insert into restaurante ( nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values ( 'Bar da Maria', 6, 4, utc_timestamp, utc_timestamp);
 
+insert into restaurante (data_cadastro, data_atualizacao, endereco_bairro, endereco_cep, endereco_complemento, endereco_logradouro, endereco_numero, nome, taxa_frete, cozinha_id, endereco_cidade_id) values (utc_timestamp, utc_timestamp,  'Parada inglesa', '1244230', '5423','rua raposo tavares', '412', 'Java Steakhouse' , 12 , 1, 2);
+insert into restaurante (data_cadastro, data_atualizacao, endereco_bairro, endereco_cep, endereco_complemento, endereco_logradouro, endereco_numero, nome, taxa_frete, cozinha_id, endereco_cidade_id) values (utc_timestamp, utc_timestamp,'Santana', '11221122', '4512','rua caninda', '124', 'Lanchonete do Tio Sam' , 12 , 1 ,1);
+insert into restaurante (data_cadastro, data_atualizacao, endereco_bairro, endereco_cep, endereco_complemento, endereco_logradouro, endereco_numero, nome, taxa_frete, cozinha_id, endereco_cidade_id) values (utc_timestamp, utc_timestamp,'Imirim', '123123', '133','rua raposo  joroge', '124', 'Bar da Maria' , 22 , 1 ,1);
 
 insert into restaurante (data_cadastro, data_atualizacao, endereco_bairro, endereco_cep, endereco_complemento, endereco_logradouro, endereco_numero, nome, taxa_frete, cozinha_id, endereco_cidade_id) values (utc_timestamp, utc_timestamp,  'Parada inglesa', '1244230', '5423','rua raposo tavares', '412', 'Pizzaria tomas' , 12 , 1, 2);
 insert into restaurante (data_cadastro, data_atualizacao, endereco_bairro, endereco_cep, endereco_complemento, endereco_logradouro, endereco_numero, nome, taxa_frete, cozinha_id, endereco_cidade_id) values (utc_timestamp, utc_timestamp,'Santana', '11221122', '4512','rua caninda', '124', 'Pizzaria canono' , 12 , 1 ,1);
