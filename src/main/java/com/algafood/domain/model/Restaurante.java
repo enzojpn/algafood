@@ -24,12 +24,14 @@ import javax.validation.groups.Default;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.algafood.Groups; 
+import com.algafood.Groups;
+import com.algafood.core.validation.ValorZeroIncluiDescricao;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
+@ValorZeroIncluiDescricao(valorField= "taxaFrete" , descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 @Entity
 public class Restaurante {
 
@@ -70,6 +72,22 @@ public class Restaurante {
 	@OneToMany(mappedBy = "restaurante")
 	private List<Produto> produtos;
 	
+	private Boolean ativo = Boolean.TRUE;
+	
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+
+	public void setAtivo( ) {
+		this.ativo = true;
+	}
+
+	public void setInativo( ) {
+		this.ativo = false;
+	}
+
+
 	public Long getId() {
 		return id;
 	}
