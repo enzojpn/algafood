@@ -2,6 +2,7 @@ package com.algafood.api.model.input;
 
 import java.math.BigDecimal;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -19,8 +20,11 @@ public class RestauranteInput {
 	@NotNull
 	private BigDecimal taxaFrete;
 	
+	@Valid
 	@NotNull
-	private CozinhaInput cozinha;
+	private CozinhaIdInput cozinha;
 	
-	
+	@Valid
+	@NotNull
+	private EnderecoInput endereco;
 }
