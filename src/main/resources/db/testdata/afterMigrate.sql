@@ -75,3 +75,8 @@ insert ignore into produto (nome, descricao, preco, ativo, restaurante_id) value
 
 
 insert into grupo (nome) values ('Gerente'), ('Vendedor'), ('Secretária'), ('Cadastrador');
+
+insert into usuario (nome, email, senha, data_cadastro ) values ('Katia', 'emai@gamil.com', '444' , utc_timestamp);
+insert into usuario (nome, email, senha, data_cadastro ) values ('Keller', 'emaih@gamil.com', 'aw22esrf' , utc_timestamp);
+insert into usuario (nome, email, senha, data_cadastro ) values ('Karla', 'emsaddi@gamil.com', '412' , utc_timestamp);
+insert into usuario (nome, email, senha, data_cadastro ) values ('Karin', 'emadi@gamil.com', '12312' , utc_timestamp);
