@@ -1,6 +1,7 @@
 package com.algafood.domain.model;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 public class Usuario {
@@ -25,7 +28,8 @@ public class Usuario {
 
 	private String senha;
 
-	private LocalDate dataCadastro;
+	@CreationTimestamp
+	private OffsetDateTime dataCadastro;
 
 	@ManyToMany
 	@JoinTable(name = "usuario_grupo" , joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "grupo_id"))
@@ -64,11 +68,11 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	public LocalDate getDataCadastro() {
+	public OffsetDateTime getDataCadastro() {
 		return dataCadastro;
 	}
 
-	public void setDataCadastro(LocalDate dataCadastro) {
+	public void setDataCadastro(OffsetDateTime dataCadastro) {
 		this.dataCadastro = dataCadastro;
 	}
 
