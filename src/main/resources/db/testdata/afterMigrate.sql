@@ -12,6 +12,7 @@ set foreign_key_checks = 0;
   delete from restaurante_forma_pagamento;
   delete from usuario;
   delete from usuario_grupo;
+  delete from restaurante_produto;
 
 set foreign_key_checks = 1;
 
@@ -24,6 +25,7 @@ alter table permissao auto_increment=1;
 alter table produto auto_increment =1;
 alter table restaurante auto_increment =1;
 alter table usuario auto_increment =1;
+alter table restaurante_produto auto_increment =1;
 
 insert ignore  into cozinha (nome) values ('Tailandesa');
 insert ignore into cozinha (nome) values ('Indiana');
@@ -80,3 +82,8 @@ insert into usuario (nome, email, senha, data_cadastro ) values ('Katia', 'emai@
 insert into usuario (nome, email, senha, data_cadastro ) values ('Keller', 'emaih@gamil.com', 'aw22esrf' , utc_timestamp);
 insert into usuario (nome, email, senha, data_cadastro ) values ('Karla', 'emsaddi@gamil.com', '412' , utc_timestamp);
 insert into usuario (nome, email, senha, data_cadastro ) values ('Karin', 'emadi@gamil.com', '12312' , utc_timestamp);
+
+
+
+insert into restaurante_produto (restaurante_id, produto_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3) ;
+
