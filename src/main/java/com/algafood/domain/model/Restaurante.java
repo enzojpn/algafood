@@ -31,7 +31,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
-@ValorZeroIncluiDescricao(valorField= "taxaFrete" , descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
+@ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 @Entity
 public class Restaurante {
 
@@ -39,12 +39,12 @@ public class Restaurante {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank 
+	@NotBlank
 	@Column(nullable = false)
 	private String nome;
 
 	@NotNull
-	@PositiveOrZero 
+	@PositiveOrZero
 	@Column(name = "taxa_frete")
 	private BigDecimal taxaFrete;
 
@@ -53,46 +53,59 @@ public class Restaurante {
 	@NotNull
 	@ManyToOne
 	private Cozinha cozinha;
-	 
+
 	@ManyToMany
-	@JoinTable(name = "restaurante_forma_pagamento",
-			joinColumns = @JoinColumn(name = "restaurante_id"),
-			inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
+	@JoinTable(name = "restaurante_forma_pagamento", joinColumns = @JoinColumn(name = "restaurante_id"), inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
 	private List<FormaPagamento> formasPagamento = new ArrayList<>();
-	
+
 	@Embedded
 	private Endereco endereco;
-	
+
 	@CreationTimestamp
 	private OffsetDateTime dataCadastro;
-	
+
 	@UpdateTimestamp
 	private OffsetDateTime dataAtualizacao;
-	
+
 	@OneToMany(mappedBy = "restaurante")
 	private List<Produto> produtos;
-	
+
 	private Boolean ativo = Boolean.TRUE;
-	
+
+	private Boolean aberto = Boolean.FALSE;
+
+	public Boolean getAberto() {
+		return aberto;
+	}
+
+	public void setAberto(Boolean aberto) {
+		this.aberto = aberto;
+	}
+
 	public Boolean getAtivo() {
 		return ativo;
 	}
 
+	public void abrir() {
+		setAberto(true);
+	}
 
-	public void setAtivo( ) {
+	public void fechar() {
+		setAberto(false);
+	}
+
+	public void setAtivo() {
 		this.ativo = true;
 	}
 
-	public void setInativo( ) {
+	public void setInativo() {
 		this.ativo = false;
 	}
-
 
 	public Long getId() {
 		return id;
 	}
 
-	
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -120,56 +133,46 @@ public class Restaurante {
 	public void setCozinha(Cozinha cozinha) {
 		this.cozinha = cozinha;
 	}
- 
-	
+
 	public List<FormaPagamento> getFormasPagamento() {
 		return formasPagamento;
 	}
-
 
 	public void setFormasPagamento(List<FormaPagamento> formasPagamento) {
 		this.formasPagamento = formasPagamento;
 	}
 
-
 	public Endereco getEndereco() {
 		return endereco;
 	}
-
 
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
 
-
 	public OffsetDateTime getDataCadastro() {
 		return dataCadastro;
 	}
 
-
 	public void setDataCadastro(OffsetDateTime dataCadastro) {
 		this.dataCadastro = dataCadastro;
-	} 
-	
+	}
+
 	public OffsetDateTime getDataAtualizacao() {
 		return dataAtualizacao;
 	}
-
 
 	public void setDataAtualizacao(OffsetDateTime dataAtualizacao) {
 		this.dataAtualizacao = dataAtualizacao;
 	}
 
-
 	public List<Produto> getProdutos() {
 		return produtos;
 	}
 
-
 	public void setProdutos(List<Produto> produtos) {
 		this.produtos = produtos;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -196,6 +199,4 @@ public class Restaurante {
 		return result;
 	}
 
-	
-	
 }

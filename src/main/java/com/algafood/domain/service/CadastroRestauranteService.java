@@ -54,4 +54,16 @@ public class CadastroRestauranteService {
 		restauranteAtual.setInativo();
 	}
 
+	@Transactional
+	public void abrir(Long restauranteID) {
+		Restaurante restaurante = buscarOuFalhar(restauranteID);
+		restaurante.abrir();
+	}
+
+	@Transactional
+	public void fechar(Long restauranteId) {
+		Restaurante restaurante = buscarOuFalhar(restauranteId);
+		restaurante.fechar();
+	}
+
 }
