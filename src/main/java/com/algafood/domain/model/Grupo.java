@@ -1,7 +1,8 @@
 package com.algafood.domain.model;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,8 +24,7 @@ public class Grupo {
 	@ManyToMany
 	@JoinTable(name = "grupo_permissao", joinColumns =  @JoinColumn(name = "grupo_id"), 
 	inverseJoinColumns = @JoinColumn(name = "permissao_id"))
-	private List<Permissao> permissoes = new ArrayList<>();
-	
+	private Set<Permissao> permissoes = new HashSet<>()	;
 	public Long getId() {
 		return id;
 	}
@@ -41,14 +41,22 @@ public class Grupo {
 		this.nome = nome;
 	}
 
-	public List<Permissao> getPermissoes() {
+	public Set<Permissao> getPermissoes() {
 		return permissoes;
 	}
 
-	public void setPermissoes(List<Permissao> permissoes) {
+	public void setPermissoes(Set<Permissao> permissoes) {
 		this.permissoes = permissoes;
 	}
 
+
+	public boolean adicionarPermissao(Permissao permissao ) {
+		return getPermissoes().add(permissao);
+	}
+	
+	public boolean removerPermissao(Permissao permissao) {
+		return getPermissoes().remove(permissao);
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;

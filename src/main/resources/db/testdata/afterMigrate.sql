@@ -75,15 +75,17 @@ insert ignore into produto (nome, descricao, preco, ativo, restaurante_id) value
 insert ignore into produto (nome, descricao, preco, ativo, restaurante_id) values ('Sanduíche X-Tudo', 'Sandubão com muito queijo, hamburger bovino, bacon, ovo, salada e maionese', 19, 1, 5);   
 insert ignore into produto (nome, descricao, preco, ativo, restaurante_id) values ('Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, 1, 6);
 
+insert into grupo (id, nome) values (1, 'Gerente'), (2, 'Vendedor'), (3, 'Secretária'), (4, 'Cadastrador');
 
-insert into grupo (nome) values ('Gerente'), ('Vendedor'), ('Secretária'), ('Cadastrador');
+insert into permissao (id, nome, descricao) values (1, 'CONSULTAR_COZINHAS', 'Permite consultar cozinhas');
+insert into permissao (id, nome, descricao) values (2, 'EDITAR_COZINHAS', 'Permite editar cozinhas');
+insert into grupo_permissao (grupo_id, permissao_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1); 
 
 insert into usuario (nome, email, senha, data_cadastro ) values ('Katia', 'emai@gamil.com', '444' , utc_timestamp);
 insert into usuario (nome, email, senha, data_cadastro ) values ('Keller', 'emaih@gamil.com', 'aw22esrf' , utc_timestamp);
 insert into usuario (nome, email, senha, data_cadastro ) values ('Karla', 'emsaddi@gamil.com', '412' , utc_timestamp);
 insert into usuario (nome, email, senha, data_cadastro ) values ('Karin', 'emadi@gamil.com', '12312' , utc_timestamp);
-
-
-
+ 
+ 
 insert into restaurante_produto (restaurante_id, produto_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3) ;
 
