@@ -3,7 +3,9 @@ package com.algafood.domain.model;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,9 +35,24 @@ public class Usuario {
 
 	@ManyToMany
 	@JoinTable(name = "usuario_grupo" , joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "grupo_id"))
-	private List<Grupo> grupos = new ArrayList<>();
+	private Set<Grupo> grupos = new HashSet();
 	
+	public Set<Grupo> getGrupos() {
+		return grupos;
+	}
+
 	
+	public boolean removerGrupo(Grupo grupo) {
+		return grupos.remove(grupo);
+	}
+	
+	public boolean adicionarGrupo(Grupo grupo) {
+		return grupos.add(grupo);
+	}
+	
+	public void setGrupos(Set<Grupo> grupos) {
+		this.grupos = grupos;
+	}
 	public Long getId() {
 		return id;
 	}

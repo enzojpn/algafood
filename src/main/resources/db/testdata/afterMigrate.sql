@@ -89,3 +89,4 @@ insert into usuario (nome, email, senha, data_cadastro ) values ('Karin', 'emadi
  
 insert into restaurante_produto (restaurante_id, produto_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3) ;
 
+insert into usuario_grupo (usuario_id, grupo_id) values (1 , 1) , (1, 2) , (2,1);
