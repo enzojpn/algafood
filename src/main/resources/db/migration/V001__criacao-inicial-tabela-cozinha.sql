@@ -3,3 +3,12 @@ create table cozinha (
     nome varchar(60) not null,
     primary key (id)
 ) engine=InnoDB default charset=utf8;
+
+
+create table demanda (
+	id bigint not null auto_increment,
+    numero int not null,    
+    deescrição varchar(255) not null,
+    primary key (id)
+
+)engine=InnoDB default charset=utf8;

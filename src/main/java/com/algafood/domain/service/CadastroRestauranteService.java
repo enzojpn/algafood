@@ -1,7 +1,6 @@
 package com.algafood.domain.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +10,7 @@ import com.algafood.domain.exception.CozinhaNaoEncontradoException;
 import com.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algafood.domain.model.Cozinha;
 import com.algafood.domain.model.Restaurante;
+import com.algafood.domain.model.Usuario;
 import com.algafood.domain.repository.CozinhaRepository;
 import com.algafood.domain.repository.RestauranteRepository;
 
@@ -19,6 +19,9 @@ public class CadastroRestauranteService {
 
 	@Autowired
 	private RestauranteRepository restauranteRepository;
+
+	@Autowired
+	private CadastroUsuarioService cadastroUsuarioService;
 
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
@@ -55,6 +58,16 @@ public class CadastroRestauranteService {
 	}
 
 	@Transactional
+	public void inativacoes(List<Long> restaurantesId) {
+		restaurantesId.forEach(this::inativar);
+	}
+
+	@Transactional
+	public void ativacoes(List<Long> restaurantesId) {
+		restaurantesId.forEach(this::ativar);
+	}
+
+	@Transactional
 	public void abrir(Long restauranteID) {
 		Restaurante restaurante = buscarOuFalhar(restauranteID);
 		restaurante.abrir();
@@ -64,6 +77,23 @@ public class CadastroRestauranteService {
 	public void fechar(Long restauranteId) {
 		Restaurante restaurante = buscarOuFalhar(restauranteId);
 		restaurante.fechar();
+	}
+
+	@Transactional
+	public void associarResponsavel(Long restauranteId, Long usuarioId) {
+		Restaurante restaurante = buscarOuFalhar(restauranteId);
+		Usuario usuario = cadastroUsuarioService.buscarOuFalhar(usuarioId);
+
+		restaurante.adicionarResponsavel(usuario);
+
+	}
+
+	@Transactional
+	public void desassociarResponsavel(Long restauranteId, Long usuarioId) {
+		Restaurante restaurante = buscarOuFalhar(restauranteId);
+		Usuario usuario = cadastroUsuarioService.buscarOuFalhar(usuarioId);
+		restaurante.removerResponsavel(usuario);
+
 	}
 
 }
