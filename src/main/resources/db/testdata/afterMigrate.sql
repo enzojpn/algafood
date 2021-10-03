@@ -31,6 +31,8 @@ alter table restaurante auto_increment =1;
 alter table usuario auto_increment =1;
 alter table restaurante_produto auto_increment =1; 
 alter table restaurante_usuario_responsavel auto_increment =1; 
+alter table pedido auto_increment = 1;
+alter table item_pedido auto_increment = 1;
 
 insert ignore  into cozinha (nome) values ('Tailandesa');
 insert ignore into cozinha (nome) values ('Indiana');
