@@ -23,7 +23,9 @@ import com.algafood.domain.exception.NegocioException;
 import com.algafood.domain.model.Pedido;
 import com.algafood.domain.model.Usuario;
 import com.algafood.domain.repository.PedidoRepository;
+import com.algafood.domain.repository.filter.PedidoFilter;
 import com.algafood.domain.service.EmissaoPedidoService;
+import com.algafood.infrastructure.repository.spec.PedidoSpecs;
 
 @RestController
 @RequestMapping("/pedidos")
@@ -42,8 +44,8 @@ public class PedidoController {
 	private PedidoInputDisassembler pedidoInputDisassembler;
 
 	@GetMapping
-	public List<PedidoModel> listar(){
-		List<Pedido> todosPedidos =  pedidoRepository.findAll();
+	public List<PedidoModel> pesquisar(PedidoFilter filtro){
+		List<Pedido> todosPedidos =  pedidoRepository.findAll(PedidoSpecs.usandofiltro(filtro));
 		
 		return pedidoModelAssembler.toCollectionModel(todosPedidos);
 		
@@ -64,7 +66,7 @@ public class PedidoController {
 		
 		//TODO pegar usuario autenticado
 		novoPedido.setCliente(new Usuario());
-		novoPedido.getCliente().setId(1L);
+		novoPedido.getCliente().setId(2L);
 		
 		novoPedido = emissaoPedidoService.emitir(novoPedido);
 		return pedidoModelAssembler.toModel(novoPedido);
