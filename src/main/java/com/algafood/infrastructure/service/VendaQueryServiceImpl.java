@@ -28,35 +28,39 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 	private EntityManager entityManager;
 
 	@Override
-	public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filter) {
+	public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filter, String timeOffSet) {
 
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<VendaDiaria> query = builder.createQuery(VendaDiaria.class);
 		Root<Pedido> root = query.from(Pedido.class);
 
-		Expression<Date> expression = builder.function("date", Date.class, root.get("dataCriacao"));
-
-		CompoundSelection<VendaDiaria> selection = builder.construct(VendaDiaria.class, expression,
+		Expression<Date> functionOffSet = builder.function("convert_tz", Date.class, root.get("dataCriacao"),
+				builder.literal("+00:00"), builder.literal(timeOffSet));
+	
+		Expression<Date> functionDateDataCriacao = builder.function("date", Date.class,functionOffSet);
+		
+		CompoundSelection<VendaDiaria> selection = builder.construct(VendaDiaria.class, functionDateDataCriacao,
 				builder.count(root.get("id")), builder.sum(root.get("valorTotal")));
 		ArrayList<Predicate> predicates = new ArrayList<Predicate>();
 		
+
 		if (filter.getRestauranteId() != null) {
 			predicates.add(builder.equal(root.get("restaurante"), filter.getRestauranteId()));
 		}
-		
+
 		if (filter.getDataCriacaoInicio() != null) {
-			predicates.add(builder.greaterThanOrEqualTo(root.get("dataCriacao"),filter.getDataCriacaoInicio()));
+			predicates.add(builder.greaterThanOrEqualTo(root.get("dataCriacao"), filter.getDataCriacaoInicio()));
 		}
 
 		if (filter.getDataCriacaoFim() != null) {
 			predicates.add(builder.lessThanOrEqualTo(root.get("dataCriacao"), filter.getDataCriacaoFim()));
 		}
-		
+
 		predicates.add(root.get("status").in(StatusPedido.CONFIRMADO, StatusPedido.ENTREGUE));
-		
+
 		query.select(selection);
 		query.where(predicates.toArray(new Predicate[0]));
-		query.groupBy(expression);
+		query.groupBy(functionDateDataCriacao);
 
 		return entityManager.createQuery(query).getResultList();
 	}
