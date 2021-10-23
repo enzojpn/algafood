@@ -8,9 +8,11 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.algafood.domain.exception.FotoProdutoNaoEncontradaException;
 import com.algafood.domain.model.FotoProduto;
+import com.algafood.domain.model.Produto;
 import com.algafood.domain.repository.ProdutoRepository;
-import com.algafood.domain.service.FotoStorageService.NovaFoto; 
+import com.algafood.domain.service.FotoStorageService.NovaFoto;
 
 @Service
 public class CatalogoFotoProdutoService {
@@ -43,6 +45,12 @@ public class CatalogoFotoProdutoService {
 		fotoStorageService.substituir(nomeFotoAntiga, novaFoto);
 
 		return foto;
+	}
+
+	public FotoProduto buscarOuFalhar(Long restauranteId, Long produtoId) {
+		return produtoRepository.findFotoById(restauranteId, produtoId)
+				.orElseThrow(() -> new FotoProdutoNaoEncontradaException(restauranteId, produtoId));
+
 	}
 
 }

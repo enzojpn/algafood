@@ -11,6 +11,8 @@ public interface FotoStorageService {
 	
 	void deletar (String nomeArquivo);
 	
+	InputStream recuperar(String nomeArquivo);
+	
 	default void substituir(String FotoAntiga , NovaFoto novaFoto) {
 		armazenar(novaFoto);
 		
