@@ -8,14 +8,17 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -52,23 +55,25 @@ public class RestauranteProdutoFotoController {
 
 	@GetMapping(produces = MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<InputStreamResource> servirFoto(@PathVariable Long restauranteId,
-			@PathVariable Long produtoId, @RequestHeader(name = "accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
+			@PathVariable Long produtoId, @RequestHeader(name = "accept") String acceptHeader)
+			throws HttpMediaTypeNotAcceptableException {
 		FotoProduto fotoProduto = catalogoProdutoService.buscarOuFalhar(restauranteId, produtoId);
-		
-		
-		MediaType mediaTypeFoto =MediaType.parseMediaType(fotoProduto.getContentType());
-		List<MediaType> mediasAceitas =  MediaType.parseMediaTypes(acceptHeader);
+
+		MediaType mediaTypeFoto = MediaType.parseMediaType(fotoProduto.getContentType());
+		List<MediaType> mediasAceitas = MediaType.parseMediaTypes(acceptHeader);
 		verificarCompatibilidadeMediaType(mediaTypeFoto, mediasAceitas);
-		
+
 		InputStream inputStream = fotoStorageService.recuperar(fotoProduto.getNomeArquivo());
 
 		return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(new InputStreamResource(inputStream));
 	}
 
-	private void verificarCompatibilidadeMediaType(MediaType mediaTypeFoto, List<MediaType> mediasAceitas) throws HttpMediaTypeNotAcceptableException {
+	private void verificarCompatibilidadeMediaType(MediaType mediaTypeFoto, List<MediaType> mediasAceitas)
+			throws HttpMediaTypeNotAcceptableException {
 
-		boolean compativel = mediasAceitas.stream().anyMatch(mediasAceita -> mediasAceita.isCompatibleWith(mediaTypeFoto));
-		if(!compativel) {
+		boolean compativel = mediasAceitas.stream()
+				.anyMatch(mediasAceita -> mediasAceita.isCompatibleWith(mediaTypeFoto));
+		if (!compativel) {
 			throw new HttpMediaTypeNotAcceptableException(mediasAceitas);
 		}
 	}
@@ -89,6 +94,14 @@ public class RestauranteProdutoFotoController {
 
 		FotoProduto fotoSalva = catalogoProdutoService.salvar(foto, arquivo.getInputStream());
 		return fotoProdutoModelAssembler.toMoldel(fotoSalva);
+
+	}
+
+	@DeleteMapping
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void apagar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
+
+		catalogoProdutoService.excluir(restauranteId, produtoId);
 
 	}
 
