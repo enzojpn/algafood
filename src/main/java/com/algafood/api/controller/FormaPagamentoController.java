@@ -1,5 +1,6 @@
 package com.algafood.api.controller;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -34,7 +35,8 @@ public class FormaPagamentoController {
 	@GetMapping
 	public ResponseEntity<List<FormaPagamentoModel>> listar() {
 		List<FormaPagamento> todasAsFormasDePagamento = formaPagamentoRepository.findAll();
-
+		OffsetDateTime tempo =  formaPagamentoRepository.getDataUltimaAtualizacao();
+		System.out.println(tempo + " data maxima!!");
 		List<FormaPagamentoModel> formasPagamentoModel  = formaPagamentoAssembler.toCollectionModel(todasAsFormasDePagamento);
 		
 		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS)).body(formasPagamentoModel);
