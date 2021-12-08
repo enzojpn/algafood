@@ -22,6 +22,10 @@ import com.algafood.domain.model.Cidade;
 import com.algafood.domain.repository.CidadeRepository;
 import com.algafood.domain.service.CadastroCidadeService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+@Api(tags = "Cidades")
 @RestController
 @RequestMapping("/cidades")
 public class CidadeController {
@@ -32,13 +36,18 @@ public class CidadeController {
 	@Autowired
 	CidadeRepository cidadeRepository;
 
+	@ApiOperation("lista as cidades")
 	@GetMapping
 	public List<Cidade> listar() {
 		return cadastroCidade.listar();
 	}
 
+	
+	@ApiOperation("busca uma cidade por Id")
 	@GetMapping("/{cidadeId}")
-	public Cidade busca(@PathVariable Long cidadeId) {
+	public Cidade busca(
+			@ApiParam(value = "Id de uma cidade", example = "1" )
+			@PathVariable Long cidadeId) {
 		return cadastroCidade.buscarOuFalhar(cidadeId);
 	}
 

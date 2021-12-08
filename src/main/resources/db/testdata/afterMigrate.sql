@@ -64,9 +64,9 @@ insert ignore into restaurante (data_cadastro, data_atualizacao, endereco_bairro
 insert ignore into restaurante (data_cadastro, data_atualizacao, endereco_bairro, endereco_cep, endereco_complemento, endereco_logradouro, endereco_numero, nome, taxa_frete, cozinha_id, endereco_cidade_id ,ativo, aberto) values (utc_timestamp, utc_timestamp,'Vila ipirang', '12412414', '222','rua augusta', '3', 'tuk tuk' , 0 , 3 ,3 , true , true);
 	   
 	   
-insert ignore into forma_pagamento (id, descricao) values (1, 'Cartão de crédito');
-insert ignore into forma_pagamento (id, descricao) values (2, 'Cartão de débito');
-insert ignore into forma_pagamento (id, descricao) values (3, 'Dinheiro');
+insert ignore into forma_pagamento (id, descricao, data_atualizacao) values (1, 'Cartão de crédito', utc_timestamp);
+insert ignore into forma_pagamento (id, descricao, data_atualizacao) values (2, 'Cartão de débito', utc_timestamp);
+insert ignore into forma_pagamento (id, descricao, data_atualizacao) values (3, 'Dinheiro' , utc_timestamp);
 	   
 
 insert ignore into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3) ,(4, 1), (4, 2), (5, 1), (5, 2), (6, 3);
